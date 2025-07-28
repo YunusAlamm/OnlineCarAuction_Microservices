@@ -14,14 +14,19 @@ builder.Services.AddDbContext<AuctionDbContext>(options =>
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment())
+
+
+app.UseAuthorization();
+app.MapControllers();
+
+try
 {
-    app.MapOpenApi();
+    DbInitializer.InitDb(app);
 }
-
-app.UseHttpsRedirection();
-
-
+catch (Exception ex)
+{
+    Console.WriteLine($"An error occurred while initializing the database: {ex.Message}");
+}
 
 
 app.Run();
