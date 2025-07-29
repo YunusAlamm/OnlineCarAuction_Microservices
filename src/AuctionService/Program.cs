@@ -1,15 +1,25 @@
+using AuctionService.Application.Mappers;
 using AuctionService.Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
+
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllers();
 builder.Services.AddDbContext<AuctionDbContext>(options =>
-{
-    
+{  
     options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection"));
 });
+builder.Services.AddAutoMapper(typeof(MappingProfiles));
+
+
+
+
+
+
+
 
 var app = builder.Build();
 
