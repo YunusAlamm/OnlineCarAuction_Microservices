@@ -45,6 +45,85 @@ public class AuctionsController : ControllerBase
 
         return _mapper.Map<AuctionDto>(auction);
     }
+
+    [HttpPost]
+    public async Task<ActionResult<AuctionDto>> CreateAuction([FromBody] CreateAuctionDto createAuctionDto)
+    {
+        if (createAuctionDto == null)
+        {
+            return BadRequest("Auction data is required.");
+        }
+
+        var auction = _mapper.Map<Auction>(createAuctionDto);
+        // TODO: add current user as seller
+        auction.Seller = "test";
+        _dbContext.Auctions.Add(auction);
+        var result = await _dbContext.SaveChangesAsync() > 0;
+
+        if (!result)
+        {
+            return BadRequest("Failed to create auction.");
+        }
+
+        return CreatedAtAction(nameof(GetAuctionById), new { id = auction.Id }, _mapper.Map<AuctionDto>(auction));
+    }
+
+    [HttpPut("{id}")]
+    public async Task<ActionResult> UpdateAuction([FromBody] UpdateAuctionDto updateAuctionDto, Guid id)
+    {
+        var auction = await _dbContext.Auctions.Include(a => a.Item).FirstOrDefaultAsync(x => x.Id == id);
+
+        if (auction == null)
+        {
+            return NotFound();
+        }
+
+        // TODO: check seller == username
+        auction.Item.Make = updateAuctionDto.Make ?? auction.Item.Make;
+        auction.Item.Model = updateAuctionDto.Model ?? auction.Item.Model;
+        auction.Item.Year = updateAuctionDto.Year ?? auction.Item.Year;
+        auction.Item.Color = updateAuctionDto.Color ?? auction.Item.Color;
+        auction.Item.ImageUrl = updateAuctionDto.ImageUrl ?? auction.Item.ImageUrl;
+        auction.Item.Mileage = updateAuctionDto.Mileage ?? auction.Item.Mileage;
+
+        var result = await _dbContext.SaveChangesAsync() > 0;
+        if (!result)
+        {
+            return BadRequest("Failed to update auction.");
+        }
+        return Ok();
+
+
+
+
+    }
+
+    [HttpDelete("{id}")]
+    public async Task<ActionResult> DeleteAuction(Guid id)
+    {
+        var auction = await _dbContext.Auctions.FindAsync(id);
+
+        if (auction == null)
+        {
+            return NotFound();
+        }
+
+        // TODO: check seller == username
+
+        _dbContext.Auctions.Remove(auction);
+        var result = await _dbContext.SaveChangesAsync() > 0;
+
+        if (!result)
+        {
+            return BadRequest("Failed to delete auction.");
+        }
+
+        return Ok();
+    }
+
+
+
+   
    
 
 }
