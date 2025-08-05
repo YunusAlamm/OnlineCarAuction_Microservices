@@ -3,6 +3,7 @@ using System.Text.Json;
 using MongoDB.Driver;
 using MongoDB.Entities;
 using SearchService.Infrastructure.DatabaseModel;
+using SearchService.Infrastructure.SvcComunications;
 
 namespace SearchService.Infrastructure.Data;
 
@@ -20,18 +21,31 @@ public class DbInitializer
             .Key(x => x.Color, KeyType.Text)
             .CreateAsync();
 
-        var count = await DB.CountAsync<Item>();
-        if (count == 0)
-        {
-            Console.WriteLine("Seeding database with initial data...");
-            var itemData = await File.ReadAllTextAsync("Infrastructure/Data/auctions.json");
-            var options = new JsonSerializerOptions { PropertyNameCaseInsensitive = true };
-            var items = JsonSerializer.Deserialize<List<Item>>(itemData, options);
+        //var count = await DB.CountAsync<Item>();
+        // if (count == 0)
+        // {
+        //     Console.WriteLine("Seeding database with initial data...");
+        //     var itemData = await File.ReadAllTextAsync("Infrastructure/Data/auctions.json");
+        //     var options = new JsonSerializerOptions { PropertyNameCaseInsensitive = true };
+        //     var items = JsonSerializer.Deserialize<List<Item>>(itemData, options);
 
+        //     await DB.SaveAsync(items);
+
+
+        // }
+
+        using var scope = app.Services.CreateScope();
+        var auctionSvcClient = scope.ServiceProvider.GetRequiredService<AuctionSvcHttpClient>();
+
+        var items = await auctionSvcClient.GetItemsForSearchDb();
+        Console.WriteLine($"Fetched {items.Count} items from Auction Service for Search DB.");
+
+        if(items.Count() > 0)
             await DB.SaveAsync(items);
+        
 
 
-        }
+
     }
     
     

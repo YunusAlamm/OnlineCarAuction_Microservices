@@ -2,13 +2,14 @@ using MongoDB.Driver;
 using MongoDB.Entities;
 using SearchService.Infrastructure.Data;
 using SearchService.Infrastructure.DatabaseModel;
+using SearchService.Infrastructure.SvcComunications;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 
 builder.Services.AddControllers();
-// Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
+builder.Services.AddHttpClient<AuctionSvcHttpClient>();
 
 var app = builder.Build();
 
