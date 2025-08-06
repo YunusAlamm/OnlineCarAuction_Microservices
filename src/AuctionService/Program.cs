@@ -1,5 +1,6 @@
 using AuctionService.Application.Mappers;
 using AuctionService.Infrastructure.Data;
+using MassTransit;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -14,7 +15,19 @@ builder.Services.AddDbContext<AuctionDbContext>(options =>
 });
 builder.Services.AddAutoMapper(typeof(MappingProfiles));
 
+builder.Services.AddMassTransit(x =>
+{
+    x.UsingRabbitMq((context, cfg) =>
+    {
 
+        cfg.ConfigureEndpoints(context);
+        // cfg.Host(builder.Configuration["RabbitMQ:Host"], h =>
+        // {
+        //     h.Username(builder.Configuration["RabbitMQ:Username"]);
+        //     h.Password(builder.Configuration["RabbitMQ:Password"]);
+        // });
+    });
+});
 
 
 
