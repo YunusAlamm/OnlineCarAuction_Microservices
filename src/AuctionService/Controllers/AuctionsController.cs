@@ -78,7 +78,6 @@ public class AuctionsController : ControllerBase
         {
             return BadRequest("Failed to create auction.");
         }
-
         return CreatedAtAction(nameof(GetAuctionById), new { id = auction.Id }, newAuction);
     }
 
@@ -99,6 +98,10 @@ public class AuctionsController : ControllerBase
         auction.Item.Color = updateAuctionDto.Color ?? auction.Item.Color;
         auction.Item.ImageUrl = updateAuctionDto.ImageUrl ?? auction.Item.ImageUrl;
         auction.Item.Mileage = updateAuctionDto.Mileage ?? auction.Item.Mileage;
+        auction.UpdatedAt = DateTime.UtcNow;
+
+        
+        await _publishEndpoint.Publish(_mapper.Map<AuctionUpdated>(auction));
 
         var result = await _dbContext.SaveChangesAsync() > 0;
         if (!result)
@@ -125,6 +128,7 @@ public class AuctionsController : ControllerBase
         // TODO: check seller == username
 
         _dbContext.Auctions.Remove(auction);
+        await _publishEndpoint.Publish<AuctionDeleted>(new {Id = auction.Id.ToString()});
         var result = await _dbContext.SaveChangesAsync() > 0;
 
         if (!result)
