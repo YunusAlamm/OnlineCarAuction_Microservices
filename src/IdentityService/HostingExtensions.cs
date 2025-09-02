@@ -1,5 +1,6 @@
 using System.Globalization;
 using Duende.IdentityServer;
+using IdentityService.CustomeServices;
 using IdentityService.Data;
 using IdentityService.Models;
 using Microsoft.AspNetCore.Identity;
@@ -75,6 +76,7 @@ internal static class HostingExtensions
             .AddInMemoryApiScopes(Config.ApiScopes)
             .AddInMemoryClients(Config.Clients)
             .AddAspNetIdentity<ApplicationUser>()
+            .AddProfileService<CustomeProfileService>()
             .AddLicenseSummary();
 
             builder.Services.ConfigureApplicationCookie(options =>
