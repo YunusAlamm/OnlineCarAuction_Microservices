@@ -1,1 +1,6 @@
-{}
+{
+    "editor.linkedEditing": false,
+    "editor.fontSize": 17,
+    "editor.mouseWheelZoom": true,
+    "editor.formatOnPaste": true
+}
