@@ -9,6 +9,7 @@ import Filters from "./Filters";
 import { useParamsStore } from "@/hooks/useParamsStore";
 import { useShallow } from "zustand/shallow";
 import qs from "query-string";
+import EmptyState from "../components/EmptyState";
 
 
 
@@ -28,6 +29,7 @@ export default  function Listings() {
     })));
 
     const setParams = useParamsStore(state => state.setParams);
+    const reset = useParamsStore(state => state.reset);
     const url = qs.stringifyUrl({url:'', query: params}, {skipEmptyString: true});
 
     function setPageNumber(pageNumber: number){
@@ -38,19 +40,20 @@ export default  function Listings() {
       getData(url).then(data =>{
         setData(data)
       })
-
     }, [url])
 
     if(!data) return <h3>Loading...</h3>
 
-
-  return (
+    return (
     <>
     <Filters/>
     {data.totalCount === 0 ? (
-      <div className="text-center text-gray-600 mt-10">
-        No auctions found matching your criteria
-      </div>
+      <EmptyState 
+        title="No auctions found"
+        subtitle="Try adjusting your filters or search term"
+        showReset
+        onReset={reset}
+      />
     ) : (
       <>
         <div className="grid grid-cols-4 gap-6">
