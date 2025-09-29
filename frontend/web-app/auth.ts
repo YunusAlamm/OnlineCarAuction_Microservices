@@ -1,4 +1,4 @@
-import NextAuth from "next-auth";
+import NextAuth, { getServerSession } from "next-auth";
 import DuendeIDS6Provider from "next-auth/providers/duende-identity-server6"
 
 export const config = {
@@ -16,5 +16,11 @@ export const config = {
 
 const handler = NextAuth(config);
 
-export const { auth, signIn, signOut } = handler;
+// For client components
+export const { signIn, signOut } = handler;
+
+// For server components
+export const auth = async () => await getServerSession(config);
+
+// For API route
 export { handler as GET, handler as POST };
