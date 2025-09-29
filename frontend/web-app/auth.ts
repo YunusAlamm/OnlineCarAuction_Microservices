@@ -1,8 +1,7 @@
 import NextAuth from "next-auth";
 import DuendeIDS6Provider from "next-auth/providers/duende-identity-server6"
 
-
-export const{handlers, signIn, signOut, auth} = NextAuth({
+export const config = {
     providers: [
         DuendeIDS6Provider({
             id:'id-server',
@@ -13,4 +12,9 @@ export const{handlers, signIn, signOut, auth} = NextAuth({
             idToken: true
         })
     ]
-});
+}
+
+const handler = NextAuth(config);
+
+export const { auth, signIn, signOut } = handler;
+export { handler as GET, handler as POST };
