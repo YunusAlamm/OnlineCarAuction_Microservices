@@ -22,7 +22,8 @@ export default  function Listings() {
       pageNumber: state.pageNumber,
       pageSize: state.pageSize,
       searchTerm: state.searchTerm,
-      orderBy: state.orderBy
+      orderBy: state.orderBy,
+      filterBy: state.filterBy
 
     })));
 
@@ -46,15 +47,23 @@ export default  function Listings() {
   return (
     <>
     <Filters/>
-    <div className="grid grid-cols-4 gap-6">
-      {data && data.results.map(auction =>(
-        <AuctionCard key={auction.id} auction={auction}/>
-      ))}
-    </div>
+    {data.totalCount === 0 ? (
+      <div className="text-center text-gray-600 mt-10">
+        No auctions found matching your criteria
+      </div>
+    ) : (
+      <>
+        <div className="grid grid-cols-4 gap-6">
+          {data.results.map(auction =>(
+            <AuctionCard key={auction.id} auction={auction}/>
+          ))}
+        </div>
 
-    <div className="flex justify-center mt-4">
-      <AppPagination pageChanged={setPageNumber} currentPage={params.pageNumber} pageCount={data.pageCount}/>
-    </div>
+        <div className="flex justify-center mt-4">
+          <AppPagination pageChanged={setPageNumber} currentPage={params.pageNumber} pageCount={data.pageCount}/>
+        </div>
+      </>
+    )}
     </>
   )
 }

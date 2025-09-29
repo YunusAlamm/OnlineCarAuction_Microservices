@@ -8,6 +8,7 @@ type Props = {
     pageChanged: (page: number) => void;
 }
 export default function AppPagination({currentPage, pageCount, pageChanged}: Props) {
+  if (pageCount <= 0) return null;
 
   return (
     <Pagination
