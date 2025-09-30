@@ -1,5 +1,6 @@
 import {auth} from '@/auth'
 import EmptyState from '../components/EmptyState';
+import AuthTest from './AuthTest';
 
 export default async function Session() {
     const session = await auth();
@@ -38,6 +39,9 @@ export default async function Session() {
             ) : (
                 <div className="text-red-500">No active session</div>
             )}
+        </div>
+        <div>
+            <AuthTest />
         </div>
     </div>
   )
