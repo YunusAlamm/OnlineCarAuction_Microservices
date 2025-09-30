@@ -31,6 +31,9 @@ export const config: AuthOptions = {
             idToken: true
         })
     ],
+    pages: {
+        signIn: '/'
+    },
     callbacks: {
         async jwt({ token, profile }) {
             if (profile) {
@@ -41,7 +44,6 @@ export const config: AuthOptions = {
         async session({ session, token }) {
             if (token && session.user) {
                 session.user.username = token.username as string;
-                
             }
             return session;
         }
