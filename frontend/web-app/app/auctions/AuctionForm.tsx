@@ -1,13 +1,18 @@
 'use client'
-import { Button, HelperText, Spinner, TextInput } from 'flowbite-react';
+import { Button, Spinner } from 'flowbite-react';
 import { useRouter } from 'next/navigation';
-import React from 'react'
+import React, { useEffect } from 'react'
 import { FieldValues, useForm } from 'react-hook-form';
+import Input from '../components/input';
 
 export default function AuctionForm() {
     const router = useRouter();
-    const { register, handleSubmit, setFocus,
-        formState: { isSubmitting, isValid, isDirty, errors } } = useForm();
+    const { control, handleSubmit, setFocus,
+        formState: { isSubmitting, isValid, isDirty } } = useForm();
+
+    useEffect(() => {
+        setFocus('make');
+    }, [setFocus]);
 
     function onSubmit(data: FieldValues) {
         console.log(data);
@@ -15,29 +20,14 @@ export default function AuctionForm() {
 
     return (
         <form className='flex flex-col mt-3' onSubmit={handleSubmit(onSubmit)}>
-            <div className='mb-3 block'>
-                <TextInput
-                    {...register('make', { required: 'Make is required' })}
-                    placeholder='Make'
-                    color={errors.make && 'failure'}
 
-                />
-                <HelperText color="failure">
-                    {errors.make?.message as string}
-                </HelperText>
-            </div>
+            <Input name='make' label='Make' control={control}
+                rules={{ required: 'Make is required' }} />
 
-            <div className='mb-3 block'>
-                <TextInput
-                    {...register('model', { required: 'model is required' })}
-                    placeholder='Model'
-                    color={errors.model && 'failure'}
+            <Input name='model' label='Model' control={control}
+                rules={{ required: 'Model is required' }} />
 
-                />
-                <HelperText color="failure">
-                    {errors.model?.message as string}
-                </HelperText>
-            </div>
+
 
             <div className='flex justify-between'>
                 <Button color="alternative" onClick={() => router.push('/')}>Cancel</Button>
