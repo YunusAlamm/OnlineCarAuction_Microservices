@@ -3,7 +3,7 @@ import { Button, Spinner } from 'flowbite-react';
 import { useRouter } from 'next/navigation';
 import React, { useEffect } from 'react'
 import { FieldValues, useForm } from 'react-hook-form';
-import Input from '../components/input';
+import Input from '../components/Input';
 
 export default function AuctionForm() {
     const router = useRouter();
