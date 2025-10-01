@@ -1,9 +1,14 @@
+import { User } from 'next-auth'
+
 export type PagedResult<T> = {
     results: T[];
     pageCount: number;
     totalCount: number;
 }
 
+export interface ExtendedUser extends User {
+    username?: string
+}
 
 export type Auction = {
     reservePrice?: number
