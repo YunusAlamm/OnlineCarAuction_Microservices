@@ -5,6 +5,7 @@ import React, { useEffect } from 'react'
 import { FieldValues, useForm } from 'react-hook-form';
 import Input from '../components/Input';
 import DateInput from '../components/DateInput';
+import { createAuction } from '../actions/AuctionActions';
 
 export default function AuctionForm() {
     const router = useRouter();
@@ -17,8 +18,18 @@ export default function AuctionForm() {
         setFocus('make');
     }, [setFocus]);
 
-    function onSubmit(data: FieldValues) {
-        console.log(data);
+ async function onSubmit(data: FieldValues) {
+    try {
+        const response = await createAuction(data);
+        if(response.error){
+            throw new Error(response.error);
+        }
+        router.push(`/auctions/details/${response.id}`);
+    } catch (error) {
+        console.log(error);
+        
+    }
+        
     }
 
     return (
@@ -39,17 +50,19 @@ export default function AuctionForm() {
                 <Input name='mileage' label='Mileage' control={control}
                     rules={{ required: 'Mileage is required' }} />
             </div>
+            <Input name='imageUrl' label='Image URL' control={control}
+                rules={{ required: 'Image URL is required' }} />
 
             <div className='grid grid-cols-2 gap-3'>
                 <Input name='reservePrice' label='Reserve Price (Enter 0 if no reserve)' type='number' control={control}
                     rules={{ required: 'Reserve Price is required' }} />
 
                 <DateInput
-                    name='auctionEnd'
+                    name='auctionEndTime'
                     label='Auction End date/time'
                     control={control}
                     showTimeSelect
-                    dateFormat="dd MMM yyyy h:mm a"
+                    dateFormat="dd MM yyyy h:mm:ss a"
                     rules={{ required: 'Auction End date is required' }}
                 />
 
