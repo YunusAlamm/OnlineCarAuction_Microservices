@@ -4,6 +4,7 @@ import { useRouter } from 'next/navigation';
 import React, { useEffect } from 'react'
 import { FieldValues, useForm } from 'react-hook-form';
 import Input from '../components/Input';
+import DateInput from '../components/DateInput';
 
 export default function AuctionForm() {
     const router = useRouter();
@@ -42,8 +43,16 @@ export default function AuctionForm() {
             <div className='grid grid-cols-2 gap-3'>
                 <Input name='reservePrice' label='Reserve Price (Enter 0 if no reserve)' type='number' control={control}
                     rules={{ required: 'Reserve Price is required' }} />
-                <Input name='auctionEnd' type='date' label='Auction End date/time' control={control}
-                    rules={{ required: 'Auction End date is required' }} />
+
+                <DateInput
+                    name='auctionEnd'
+                    label='Auction End date/time'
+                    control={control}
+                    showTimeSelect
+                    dateFormat="dd MMM yyyy h:mm a"
+                    rules={{ required: 'Auction End date is required' }}
+                />
+
             </div>
 
 
