@@ -8,7 +8,9 @@ import Input from '../components/Input';
 export default function AuctionForm() {
     const router = useRouter();
     const { control, handleSubmit, setFocus,
-        formState: { isSubmitting, isValid, isDirty } } = useForm();
+        formState: { isSubmitting, isValid, isDirty } } = useForm({
+            mode: 'onTouched'
+        });
 
     useEffect(() => {
         setFocus('make');
@@ -26,6 +28,23 @@ export default function AuctionForm() {
 
             <Input name='model' label='Model' control={control}
                 rules={{ required: 'Model is required' }} />
+
+            <Input name='color' label='Color' control={control}
+                rules={{ required: 'Color is required' }} />
+
+            <div className='grid grid-cols-2 gap-3'>
+                <Input name='year' label='Year' type='number' control={control}
+                    rules={{ required: 'Year is required' }} />
+                <Input name='mileage' label='Mileage' control={control}
+                    rules={{ required: 'Mileage is required' }} />
+            </div>
+
+            <div className='grid grid-cols-2 gap-3'>
+                <Input name='reservePrice' label='Reserve Price (Enter 0 if no reserve)' type='number' control={control}
+                    rules={{ required: 'Reserve Price is required' }} />
+                <Input name='auctionEnd' type='date' label='Auction End date/time' control={control}
+                    rules={{ required: 'Auction End date is required' }} />
+            </div>
 
 
 
