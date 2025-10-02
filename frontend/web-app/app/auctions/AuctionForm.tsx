@@ -6,6 +6,7 @@ import { FieldValues, useForm } from 'react-hook-form';
 import Input from '../components/Input';
 import DateInput from '../components/DateInput';
 import { createAuction } from '../actions/AuctionActions';
+import toast from 'react-hot-toast';
 
 export default function AuctionForm() {
     const router = useRouter();
@@ -22,12 +23,12 @@ export default function AuctionForm() {
     try {
         const response = await createAuction(data);
         if(response.error){
-            throw new Error(response.error);
+            throw response.error;
         }
         router.push(`/auctions/details/${response.id}`);
-    } catch (error) {
-        console.log(error);
-        
+    } catch (error: any) {
+        toast.error(error.status + ' ' + error.message);
+
     }
         
     }
