@@ -1,5 +1,4 @@
 import { getDetailedViewData } from "@/app/actions/AuctionActions";
-import EmptyState from "@/app/components/EmptyState";
 import CountdownTimer from "../../CountdownTimer";
 import CarImage from "../../CarImage";
 import DetailedSpecs from "./DetailedSpecs";
@@ -10,8 +9,11 @@ export default async function Details({ params }: { params: Promise<{ id: string
 
   return (
     <>
-      <div className="flex justify-between">
-        <EmptyState title={`${data.make} ${data.model}`} />
+      <div className="flex justify-between items-center">
+        <div>
+          <h1 className="text-3xl font-semibold">{data.make}</h1>
+          <h2 className="text-2xl">{data.model}</h2>
+        </div>
         <div className="flex gap-3">
           <h3 className="text-2xl font-semibold">Time Remaining</h3>
           <CountdownTimer auctionEnd={data.auctionEndTime} />
@@ -23,8 +25,12 @@ export default async function Details({ params }: { params: Promise<{ id: string
          rounded-lg overflow-hidden shadow-md">
           <CarImage imageUrl={data.imageUrl} />
         </div>
-        <div className="border-2 rounded-lg p-2 bg-gray-200">
-          <EmptyState title="Bids " />
+        <div className="border-2 rounded-lg p-4 bg-gray-100">
+          <h3 className="text-2xl font-semibold mb-4">Bids</h3>
+          {/* Placeholder for future bid content */}
+          <div className="flex justify-center items-center h-[80%] text-gray-500">
+            No bids yet
+          </div>
         </div>
 
       </div>
