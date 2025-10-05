@@ -1,3 +1,5 @@
+using System.Reflection;
+using BiddingService.Application.MappingProfiles;
 using BiddingService.Infrastructure.Consumers;
 using MassTransit;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -40,6 +42,8 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
         options.TokenValidationParameters.ValidateAudience = false;
         options.TokenValidationParameters.NameClaimType = "username";
     });
+
+builder.Services.AddAutoMapper(cfg => cfg.AddMaps(Assembly.GetAssembly(typeof(BidMapping))));
 
 
 var app = builder.Build();
