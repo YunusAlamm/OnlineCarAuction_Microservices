@@ -66,7 +66,7 @@ namespace BiddingService.Controllers
         }
 
 
-        [HttpGet("auctionId")]
+        [HttpGet("{auctionId}")]
         public async Task<ActionResult<List<Bid>>> GetBidsForAuction(string auctionId)
         {
             var bids = await DB.Find<Bid>()
