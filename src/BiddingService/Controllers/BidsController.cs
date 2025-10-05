@@ -40,29 +40,48 @@ namespace BiddingService.Controllers
             }
             else
             {
-                
 
-            var highBid = await DB.Find<Bid>()
-            .Match(a => a.AuctionId == auctionId)
-            .Sort(b => b.Descending(x => x.Amount))
-            .ExecuteFirstAsync();
 
-            if ((highBid != null && amount > highBid.Amount) || highBid == null)
-            {
-                bid.BidStatus = amount > auction.ReservePrice
-                ? BidStatus.Accepted
-                : BidStatus.AcceptedBelowReserve;
-            }
+                var highBid = await DB.Find<Bid>()
+                .Match(a => a.AuctionId == auctionId)
+                .Sort(b => b.Descending(x => x.Amount))
+                .ExecuteFirstAsync();
 
-            if (highBid != null && bid.Amount <= highBid.Amount)
-            {
-                bid.BidStatus = BidStatus.TooLow;
-            }
+                if ((highBid != null && amount > highBid.Amount) || highBid == null)
+                {
+                    bid.BidStatus = amount > auction.ReservePrice
+                    ? BidStatus.Accepted
+                    : BidStatus.AcceptedBelowReserve;
+                }
+
+                if (highBid != null && bid.Amount <= highBid.Amount)
+                {
+                    bid.BidStatus = BidStatus.TooLow;
+                }
 
             }
             await DB.SaveAsync(bid);
             return Ok(bid);
-            
+
         }
+
+
+        [HttpGet("auctionId")]
+        public async Task<ActionResult<List<Bid>>> GetBidsForAuction(string auctionId)
+        {
+            var bids = await DB.Find<Bid>()
+                .Match(a => a.AuctionId == auctionId)
+                .Sort(b => b.Descending(a => a.BidTime))
+                .ExecuteAsync();
+
+            return bids;
+        }
+
+
+
+
+
+
+
     }
 }
