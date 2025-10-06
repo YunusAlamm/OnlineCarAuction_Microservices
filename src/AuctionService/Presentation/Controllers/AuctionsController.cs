@@ -10,7 +10,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
-namespace AuctionService.Controllers;
+namespace AuctionService.Presentation.Controllers;
 
 [ApiController]
 [Route("api/[controller]")]
