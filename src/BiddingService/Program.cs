@@ -1,5 +1,6 @@
 using System.Reflection;
 using BiddingService.Application.MappingProfiles;
+using BiddingService.Application.Services;
 using BiddingService.Infrastructure.Consumers;
 using MassTransit;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -44,6 +45,7 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     });
 
 builder.Services.AddAutoMapper(cfg => cfg.AddMaps(Assembly.GetAssembly(typeof(BidMapping))));
+builder.Services.AddHostedService<CheckAuctionFinished>();
 
 
 var app = builder.Build();
