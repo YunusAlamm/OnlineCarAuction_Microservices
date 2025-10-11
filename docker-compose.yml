@@ -43,8 +43,8 @@ services:
       - "15672:15672"
     healthcheck:
       test: rabbitmq-diagnostics check_port_connectivity
-      interval: 10s
-      timeout: 10s
+      interval: 5s
+      timeout: 5s
       retries: 5
 
   auction-svc:
@@ -140,6 +140,22 @@ services:
         condition: service_healthy
       rabbitmq:
         condition: service_healthy      
+
+  notify-svc:
+    image : yunusalamm/notify-svc:latest
+    build:
+      context: .
+      dockerfile: src/NotificationService/Dockerfile
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_URLS=http://+:80
+      - RabbitMq__Host=rabbitmq
+    ports:
+      - 7004:80
+    depends_on:
+      rabbitmq:
+        condition: service_healthy  
+
 
 volumes:
   pgdata:
