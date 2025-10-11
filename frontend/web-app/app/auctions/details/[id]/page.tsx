@@ -1,4 +1,4 @@
-import { getDetailedViewData } from "@/app/actions/AuctionActions";
+import { getBidsForAuction, getDetailedViewData } from "@/app/actions/AuctionActions";
 import CountdownTimer from "../../CountdownTimer";
 import CarImage from "../../CarImage";
 import DetailedSpecs from "./DetailedSpecs";
@@ -10,16 +10,17 @@ export default async function Details({ params }: { params: Promise<{ id: string
   const { id } = await params;
   const data = await getDetailedViewData(id);
   const user = await getCurrentUser();
+  const bids = await getBidsForAuction(id);
 
   return (
     <>
       <div className="flex justify-between items-center">
         <div className="gap-3 flex items-center">
           <h1 className="text-3xl font-semibold">{data.make} {data.model}</h1>
-          {user?.username === data.seller &&(
+          {user?.username === data.seller && (
             <>
-            <EditButton id={data.id} />
-            <DeleteButton id={data.id} />
+              <EditButton id={data.id} />
+              <DeleteButton id={data.id} />
             </>
           )}
         </div>
@@ -34,12 +35,12 @@ export default async function Details({ params }: { params: Promise<{ id: string
          rounded-lg overflow-hidden shadow-md">
           <CarImage imageUrl={data.imageUrl} />
         </div>
-        <div className="border-2 rounded-lg p-4 bg-gray-100">
+        <div className="border-2 rounded-lg p-4 bg-gray-200">
           <h3 className="text-2xl font-semibold mb-4">Bids</h3>
-          {/* Placeholder for future bid content */}
-          <div className="flex justify-center items-center h-[80%] text-gray-500">
-            No bids yet
-          </div>
+          {bids.map(bid => (
+            <p key={bid.id}>{bid.bidder} - {bid.amount}</p>
+          ))}
+
         </div>
 
       </div>
