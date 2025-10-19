@@ -1,3 +1,4 @@
+'use client'
 type Props = {
     amount?: number
     reservePrice: number
@@ -16,3 +17,4 @@ export default function CurrentBid({ amount, reservePrice }: Props) {
         </div>
     )
 }
+
