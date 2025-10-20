@@ -28,8 +28,8 @@ export default function BidList({ user, auction }: Props) {
 
     useEffect(() => {
         getBidsForAuction(auction.id)
-            .then((res: any) => {
-                if (res.error) {
+            .then((res) => {
+                if ("error" in res) {
                     throw res.error
                 }
                 setBids(res as Bid[])

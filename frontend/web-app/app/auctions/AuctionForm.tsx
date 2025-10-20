@@ -10,7 +10,7 @@ import toast from 'react-hot-toast';
 import { Auction } from '@/types';
 
 type Props = {
-    auction: Auction
+    auction?: Auction
 }
 export default function AuctionForm({ auction }: Props) {
     const router = useRouter();
@@ -41,8 +41,9 @@ export default function AuctionForm({ auction }: Props) {
                 if (response.error) throw response.error;
                 router.push(`/auctions/details/${auction.id}`);
             }
-        } catch (error: any) {
-            toast.error(error.status + ' ' + error.message);
+        } catch (error) {
+            const err = error as { status?: number; message?: string };
+            toast.error(`${err.status ?? ''} ${err.message ?? 'Unknown error'}`);
         }
     }
 
