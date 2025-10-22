@@ -65,6 +65,7 @@ internal static class HostingExtensions
                 options.Events.RaiseInformationEvents = true;
                 options.Events.RaiseFailureEvents = true;
                 options.Events.RaiseSuccessEvents = true;
+                options.IssuerUri = builder.Configuration["IssuerUri"];
 
                 // Use a large chunk size for diagnostic data in development where it will be redirected to a local file.
                 if (builder.Environment.IsDevelopment())
@@ -72,14 +73,10 @@ internal static class HostingExtensions
                     options.Diagnostics.ChunkSize = 1024 * 1024 * 10; // 10 MB
                 }
 
-                if(builder.Environment.IsEnvironment("Docker"))
-                {
-                    options.IssuerUri = "https://localhost:5001";
-                }
             })
             .AddInMemoryIdentityResources(Config.IdentityResources)
             .AddInMemoryApiScopes(Config.ApiScopes)
-            .AddInMemoryClients(Config.Clients)
+            .AddInMemoryClients(Config.Clients(builder.Configuration))
             .AddAspNetIdentity<ApplicationUser>()
             .AddProfileService<CustomeProfileService>()
             .AddLicenseSummary();
