@@ -170,6 +170,7 @@ services:
       - AUTH_SECRET="a3ptAS/PWfkLHK9C8Hpy9m2d60orGJSlOVN8BS4muJs="
       - API_URL=http://gateway-svc/
       - ID_URL=http://localhost:5001
+      - ID_URL_INTERNAL=http://identity-svc
       - AUTH_URL=http://localhost:3000              
       - AUTH_URL_INTERNAL=http://web-app:3000              
 
