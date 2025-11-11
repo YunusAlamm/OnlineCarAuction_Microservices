@@ -1,6 +1,10 @@
+using AuctionService.Application.Interfaces;
 using AuctionService.Application.Mappers;
+using AuctionService.Application.Services;
+using AuctionService.Domain.Interfaces;
 using AuctionService.Infrastructure.Consumers;
 using AuctionService.Infrastructure.Data;
+using AuctionService.Infrastructure.Repositories;
 using AuctionService.Presentation.Services;
 using MassTransit;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -55,7 +59,8 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     });
 
 builder.Services.AddGrpc();
-
+builder.Services.AddScoped<IAuctionRepository, AuctionRepository>();
+builder.Services.AddScoped<IAuctionService,AuctionServices>();
 
 
 
