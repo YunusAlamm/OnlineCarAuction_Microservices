@@ -29,7 +29,7 @@ namespace AuctionService.Infrastructure.Repositories
 
         public async Task<List<Auction>> GetAuctionsAsync(string date)
         {
-            var query = _dbContext.Auctions.OrderBy(a => a.Item.Make).AsQueryable();
+            var query = _dbContext.Auctions.Include(a => a.Item).OrderBy(a => a.Item.Make).AsQueryable();
             if (!string.IsNullOrEmpty(date))
             {
                 query = query.Where(a => a.UpdatedAt.CompareTo(DateTime.Parse(date).ToUniversalTime()) > 0);
