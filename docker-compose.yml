@@ -104,7 +104,7 @@ services:
       - ASPNETCORE_URLS=http://+:80
       # Use container DNS names for internal service-to-service communication
       - IssuerUri=http://localhost:5001
-      - ClientApp=http://web-app:3000
+      - ClientApp=http://localhost:3000
       - ConnectionStrings__DefaultConnection=Host=postgres;Port=5432;Database=Identity;User Id=postgres;Password=postgrespw;
     ports:
       - 5001:80
