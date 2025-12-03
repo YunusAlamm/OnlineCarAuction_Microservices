@@ -1,0 +1,33 @@
+[
+  {
+    "Name": "New Profile",
+    "Projects": [
+      {
+        "Path": "src\\AuctionService\\AuctionService.csproj",
+        "Action": "Start",
+        "DebugTarget": "http"
+      },
+      {
+        "Path": "src\\SearchService\\SearchService.csproj",
+        "Action": "Start",
+        "DebugTarget": "http"
+      },
+      {
+        "Path": "src\\IdentityService\\IdentityService.csproj",
+        "Action": "Start"
+      },
+      {
+        "Path": "src\\GateWayService\\GateWayService.csproj",
+        "Action": "Start"
+      },
+      {
+        "Path": "src\\BiddingService\\BiddingService.csproj",
+        "Action": "Start"
+      },
+      {
+        "Path": "src\\NotificationService\\NotificationService.csproj",
+        "Action": "Start"
+      }
+    ]
+  }
+]
