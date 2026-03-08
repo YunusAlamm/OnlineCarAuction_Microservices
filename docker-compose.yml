@@ -102,12 +102,11 @@ services:
     environment:
       - ASPNETCORE_ENVIRONMENT=Docker
       - ASPNETCORE_URLS=http://+:80
-      # Use container DNS names for internal service-to-service communication
-      - IssuerUri=http://localhost:5001
-      - ClientApp=http://localhost:3000
+      - IssuerUri=http://id.yunuscarsties.com
+      - ClientApp=http://app.yunuscarsties.com
       - ConnectionStrings__DefaultConnection=Host=postgres;Port=5432;Database=Identity;User Id=postgres;Password=postgrespw;
-    ports:
-      - 5001:80
+      - VIRTUAL_HOST=id.yunuscarsties.com         
+
     depends_on:
       postgres:
         condition: service_healthy
@@ -122,8 +121,9 @@ services:
     environment:
       - ASPNETCORE_ENVIRONMENT=Docker
       - ASPNETCORE_URLS=http://+:80
-    ports:
-      - 6001:80
+      - ClientApp=http://app.yunuscarsties.com
+      - VIRTUAL_HOST=api.yunuscarsties.com         
+
   bid-svc:
     image : yunusalamm/bid-svc:latest
     build:
@@ -165,17 +165,24 @@ services:
       dockerfile: frontend/web-app/Dockerfile
     volumes:
       - /var/lib/web/data
-    ports:
-      - 3000:3000
+
     environment:
       - TRUST_AUTH_HOST=true
       - AUTH_SECRET="a3ptAS/PWfkLHK9C8Hpy9m2d60orGJSlOVN8BS4muJs="
       - API_URL=http://gateway-svc/
-      - ID_URL=http://localhost:5001
+      - ID_URL=http://id.yunuscarsties.com
       - ID_URL_INTERNAL=http://identity-svc
-      - NEXTAUTH_URL=http://localhost:3000              
-      - NEXTAUTH_URL_INTERNAL=http://web-app:3000              
-
+      - NEXTAUTH_URL=http://app.yunuscarsties.com              
+      - NEXTAUTH_URL_INTERNAL=http://web-app:3000     
+      - VIRTUAL_HOST=app.yunuscarsties.com         
+      - VIRTUAL_PORT=3000         
+  nginx-proxy:
+    image: nginxproxy/nginx-proxy
+    container_name: nginx-proxy
+    ports:
+      - "80:80"
+    volumes:
+      - /var/run/docker.sock:/tmp/docker.sock:ro  
 
 volumes:
   pgdata:
