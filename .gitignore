@@ -53,3 +53,5 @@ CodeCoverage/
 TestResult.xml
 nunit-*.xml
 /.vs
+/.vs
+/.vs/OnlineCarAuction_Microservices/v17
